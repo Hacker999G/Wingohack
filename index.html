@@ -3,170 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WINGO HACK - ULTIMATE</title>
+    <title>Wingo Elite Hack</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        body { background-color: #050505; color: white; font-family: 'Orbitron', sans-serif; overflow: hidden; }
-        .neon-border { border: 2px solid #ff0000; box-shadow: 0 0 20px #ff0000; }
-        .bg-glass { background: rgba(15, 15, 15, 0.98); border: 1px solid rgba(255, 0, 0, 0.3); backdrop-filter: blur(15px); }
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg: #050810;
+        }
+        body {
+            background-color: var(--bg);
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+        /* Premium Gradient & Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+        .active-nav {
+            color: var(--primary);
+            filter: drop-shadow(0 0 8px var(--primary));
+        }
+        .premium-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transition: transform 0.2s ease;
+        }
+        .premium-btn:active { transform: scale(0.95); }
         
-        /* Custom Modal Styling */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        .premium-input { background: rgba(255, 0, 0, 0.05); border: 1px solid rgba(255, 0, 0, 0.3); color: white; transition: 0.3s; }
-        .premium-input:focus { border-color: #ff0000; box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); outline: none; }
+        /* Animated Background */
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, #1e1b4b, transparent);
+            z-index: -1;
+        }
+        .hidden-section { display: none; }
         
-        marquee { background: rgba(255, 0, 0, 0.15); color: #ff4d4d; padding: 8px 0; font-size: 11px; border-bottom: 1px solid #ff0000; font-weight: bold; }
-        .glitch { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        /* Lock Overlay */
+        #lock-overlay {
+            background: rgba(5, 8, 16, 0.8);
+            backdrop-filter: blur(8px);
+        }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen">
+<body class="overflow-hidden">
 
-    <div class="w-full fixed top-0 z-[100]">
-        <marquee scrollamount="4">
-            ⚠️ কোনো বটই ১০০% সিগনাল দেয় না। আমাদের সার্ভার প্রতিনিয়ত ১ ঘন্টা পর পর আপডেট করা হয়। তাই ৯৯% সঠিক সিগনাল দেয়। সার্ভার সমস্যার কারণে ভুল হলে ২-১ মিনিট পর আবার চেষ্টা করুন।
-        </marquee>
-    </div>
+    <div class="bg-glow"></div>
 
-    <div class="mt-12 text-center mb-6">
-        <div class="w-20 h-20 mx-auto rounded-full border-2 border-red-600 flex items-center justify-center neon-border mb-3">
-            <img src="https://img.icons8.com/ios-filled/100/ff0000/skull.png" class="w-12" alt="Skull">
-        </div>
-        <h1 class="text-2xl font-black tracking-[0.3em] text-red-600 glitch">WINGO HACK</h1>
-        <p class="text-[9px] text-gray-500 tracking-[0.5em]">VIP ACCESS ONLY</p>
-    </div>
-
-    <div class="bg-glass w-[90%] max-w-[360px] p-6 rounded-[2.5rem] shadow-2xl relative border-t-4 border-red-600">
-        <div class="flex justify-between mb-6 bg-black/50 p-1 rounded-xl border border-red-900/30">
-            <label class="w-1/2 text-center py-2 cursor-pointer">
-                <input type="radio" name="timeType" value="30" checked class="hidden peer">
-                <span class="text-[10px] text-gray-500 peer-checked:text-red-500 font-bold transition-all">WINGO 30S</span>
-            </label>
-            <label class="w-1/2 text-center py-2 cursor-pointer">
-                <input type="radio" name="timeType" value="60" class="hidden peer">
-                <span class="text-[10px] text-gray-500 peer-checked:text-red-500 font-bold transition-all">WINGO 1M</span>
-            </label>
-        </div>
-
-        <div class="mb-6">
-            <div id="resultDisplay" class="h-24 flex items-center justify-center bg-black/40 border border-red-600/20 rounded-2xl text-4xl font-black text-white italic tracking-widest shadow-inner">
-                START
+    <header class="p-5 flex justify-between items-center animate__animated animate__fadeInDown">
+        <div class="flex items-center gap-3">
+            <div class="relative">
+                <img id="u_img" src="https://via.placeholder.com/50" class="w-12 h-12 rounded-2xl border border-cyan-500/50 object-cover">
+                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-bg rounded-full"></div>
+            </div>
+            <div>
+                <h2 id="u_name" class="font-bold text-sm tracking-wide">Guest User</h2>
+                <p class="text-[10px] text-cyan-400 font-mono">STATUS: <span id="status_text">UNPAID</span></p>
             </div>
         </div>
+        <div class="glass px-3 py-1 text-[10px] font-bold border-cyan-500/30 text-cyan-300">SERVER: ONLINE</div>
+    </header>
 
-        <div class="mb-6">
-            <p class="text-[10px] text-center text-gray-500 mb-2 italic">ENTER LAST 3 DIGITS</p>
-            <input type="number" id="periodInput" placeholder="---" 
-                class="w-full bg-transparent border-b-2 border-red-900 p-2 text-center text-3xl font-bold focus:border-red-600 focus:outline-none transition-all">
-        </div>
-
-        <div class="space-y-4">
-            <button onclick="handleSignalRequest()" class="w-full bg-red-600 hover:bg-red-700 py-4 rounded-2xl font-black text-white shadow-lg active:scale-95 transition-all">
-                GET PREDICTION
-            </button>
-            <a href="https://t.me/QX_TRADER_77" target="_blank" class="block w-full text-center py-2 text-[11px] text-red-500 font-bold tracking-widest border border-red-600/30 rounded-xl">
-                BUY PREMIUM KEY
-            </a>
-        </div>
-    </div>
-
-    <div id="msgPopup" class="modal-overlay">
-        <div class="bg-glass p-8 rounded-[2rem] max-w-[300px] text-center neon-border">
-            <div class="text-red-500 text-4xl mb-4 italic">!</div>
-            <h2 class="text-lg font-bold mb-2">PREMIUM REQUIRED</h2>
-            <p class="text-[11px] text-gray-400 mb-6 leading-relaxed">যেহেতু এটা প্রিমিয়াম বট তাই অবশ্যই এটা পেইড। পাসওয়ার্ড নিতে এডমিনের ইনবক্সে মেসেজ দিন।</p>
-            <button onclick="showPasswordInput()" class="w-full bg-red-600 py-3 rounded-xl font-bold text-sm">CONTACT ADMIN</button>
-        </div>
-    </div>
-
-    <div id="passPopup" class="modal-overlay">
-        <div class="bg-glass p-8 rounded-[2rem] max-w-[300px] text-center border-t-4 border-red-600">
-            <h2 class="text-sm font-bold tracking-widest mb-4">ENTER ACCESS KEY</h2>
-            <input type="text" id="passInput" placeholder="Enter Password" 
-                class="w-full premium-input p-3 rounded-xl text-center mb-4 text-sm font-bold">
-            <div class="flex gap-2">
-                <button onclick="hidePopups()" class="w-1/3 text-[10px] text-gray-500">CANCEL</button>
-                <button onclick="verifyPassword()" class="w-2/3 bg-red-600 py-3 rounded-xl font-bold text-xs shadow-lg shadow-red-900/40">UNLOCK NOW</button>
+    <main class="h-[calc(100vh-160px)] overflow-y-auto px-5">
+        
+        <section id="sec-plan" class="animate__animated animate__fadeIn">
+            <h1 class="text-2xl font-black mb-6 mt-2">CHOOSE <span class="text-cyan-400">PLAN</span></h1>
+            
+            <div class="space-y-4">
+                <script>
+                    const plans = [
+                        { d: '3 Days', p: 300, id: 'STARTER' },
+                        { d: '7 Days', p: 650, id: 'PRO' },
+                        { d: '15 Days', p: 1400, id: 'ELITE' },
+                        { d: '30 Days', p: 2500, id: 'MASTER' },
+                        { d: '3 Months', p: 7000, id: 'VIP' }
+                    ];
+                    plans.forEach(plan => {
+                        document.write(`
+                            <div onclick="openPay('${plan.d}', ${plan.p})" class="glass p-5 flex justify-between items-center group relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div>
+                                    <h3 class="font-bold text-lg">${plan.d} Access</h3>
+                                    <p class="text-xs text-gray-400 font-mono">CODE: ${plan.id}_HACK</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="block text-xl font-black text-cyan-400">৳${plan.p}</span>
+                                    <span class="text-[10px] uppercase tracking-tighter text-gray-500">One-time payment</span>
+                                </div>
+                            </div>
+                        `);
+                    });
+                </script>
             </div>
+        </section>
+
+        <section id="sec-predict" class="hidden-section relative min-h-[400px]">
+            <div id="lock-overlay" class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-6 rounded-3xl">
+                <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-4">🔒</div>
+                <h3 class="text-xl font-bold">Access Denied</h3>
+                <p class="text-sm text-gray-400 mt-2">আপনাকে প্রথমে একটি প্লান কিনতে হবে সিগনাল দেখার জন্য।</p>
+                <button onclick="showSection('plan')" class="mt-5 px-6 py-2 bg-white text-black rounded-full font-bold text-sm">Buy Now</button>
+            </div>
+
+            <div id="predict-content" class="blur-sm pointer-events-none opacity-50">
+                <h1 class="text-2xl font-black mb-6 mt-2 text-cyan-400">PREDICTOR</h1>
+                <div class="glass p-6">
+                    <select id="app_type" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl mb-5 outline-none">
+                        <option>Dk win</option><option>Amar club</option><option>Hazynice</option>
+                    </select>
+                    <input type="number" id="p_num" placeholder="Last 3 Digits (e.g. 320)" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl mb-8 text-center text-3xl font-black text-cyan-400">
+                    <button onclick="generate()" id="g_btn" class="premium-btn w-full py-5 rounded-2xl font-black text-lg shadow-lg shadow-cyan-500/20 uppercase">Analyze Server</button>
+                </div>
+                <div id="res_box" class="hidden mt-8 text-center animate__animated animate__zoomIn">
+                    <p class="text-gray-400 uppercase text-xs tracking-widest">Prediction Result</p>
+                    <h2 id="final_res" class="text-7xl font-black my-4">BIG</h2>
+                    <div class="flex justify-center gap-2" id="dots"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-profile" class="hidden-section animate__animated animate__fadeIn">
+            <div class="glass p-8 text-center mt-5">
+                <div class="w-24 h-24 mx-auto rounded-3xl border-2 border-cyan-500/30 p-1 mb-4">
+                    <img id="p_img" src="https://via.placeholder.com/100" class="w-full h-full rounded-2xl object-cover">
+                </div>
+                <h2 id="p_name" class="text-2xl font-bold">User Name</h2>
+                <p id="p_id" class="text-gray-500 font-mono text-xs mt-1 italic">ID: 7071188264</p>
+                
+                <div class="mt-8 grid grid-cols-2 gap-3">
+                    <div class="bg-white/5 p-4 rounded-2xl">
+                        <span class="block text-[10px] text-gray-400 uppercase">Expiry</span>
+                        <span class="text-sm font-bold text-red-400" id="exp">NO PLAN</span>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-2xl">
+                        <span class="block text-[10px] text-gray-400 uppercase">Win Rate</span>
+                        <span class="text-sm font-bold text-green-400">98.2%</span>
+                    </div>
+                </div>
+                
+                <button onclick="window.open('https://t.me/Ruddro_nill?text=আমি Wingo hack বট থেকে এসেছি। সাপোর্ট চাই!! 😭')" class="w-full mt-6 py-4 glass text-sm font-bold flex items-center justify-center gap-2 active:bg-white/10 transition-all">
+                    <span>💬</span> Official Support
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <nav class="fixed bottom-6 left-5 right-5 h-20 glass flex items-center justify-around z-[100] border-white/20">
+        <button onclick="showSection('plan')" id="n-plan" class="flex flex-col items-center gap-1 active-nav">
+            <span class="text-xl">💳</span><span class="text-[10px] uppercase font-bold">Plan</span>
+        </button>
+        <button onclick="showSection('predict')" id="n-predict" class="flex flex-col items-center gap-1">
+            <span class="text-xl">🎯</span><span class="text-[10px] uppercase font-bold">Signal</span>
+        </button>
+        <button onclick="showSection('profile')" id="n-profile" class="flex flex-col items-center gap-1">
+            <span class="text-xl">👤</span><span class="text-[10px] uppercase font-bold">User</span>
+        </button>
+    </nav>
+
+    <div id="pay-modal" class="fixed inset-0 z-[200] hidden bg-black/80 flex items-end">
+        <div class="w-full bg-[#e11d48] rounded-t-[40px] p-8 animate__animated animate__slideInUp">
+            <div class="w-12 h-1 bg-white/30 mx-auto rounded-full mb-6"></div>
+            <h2 class="text-2xl font-black text-white text-center mb-6">NAGAD PAYMENT</h2>
+            <div class="bg-white rounded-3xl p-6 text-black mb-6">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-3 mb-3">
+                    <span class="text-gray-500 text-sm">Target Number</span>
+                    <span class="font-bold">01983256576</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500 text-sm">Amount</span>
+                    <span id="amt-text" class="text-2xl font-black text-rose-600">৳300</span>
+                </div>
+            </div>
+            <input type="text" id="trx" placeholder="Transaction ID (TrxID)" class="w-full p-5 rounded-2xl bg-black/10 border border-white/20 text-white placeholder:text-white/50 mb-4 outline-none font-bold">
+            <button onclick="sendReq()" class="w-full py-5 bg-white text-rose-600 rounded-2xl font-black text-lg shadow-xl uppercase">Confirm Deposit</button>
+            <button onclick="closePay()" class="w-full mt-4 text-white/60 text-sm font-bold">Cancel Transaction</button>
         </div>
     </div>
-
-    <p id="timerText" class="mt-6 text-red-500 font-bold text-xs h-5 italic"></p>
 
     <script>
-        let freeUsed = false;
-        let isPremium = false;
-        let isWaiting = false;
-        const SECRET_PASS = "@WINGO@QX77";
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
 
-        function handleSignalRequest() {
-            if (isWaiting) return;
-            const input = document.getElementById('periodInput').value;
-            if (!input) { alert("Enter Period Digits!"); return; }
-
-            if (!freeUsed) {
-                executeLogic();
-                freeUsed = true;
-            } else if (isPremium) {
-                executeLogic();
-            } else {
-                document.getElementById('msgPopup').style.display = 'flex';
-            }
+        // User Data Sync
+        const user = tg.initDataUnsafe.user || { first_name: "Gopal Krishno", id: "7071188264" };
+        document.getElementById('u_name').innerText = user.first_name;
+        document.getElementById('p_name').innerText = user.first_name;
+        document.getElementById('p_id').innerText = "ID: " + user.id;
+        if(user.photo_url) {
+            document.getElementById('u_img').src = user.photo_url;
+            document.getElementById('p_img').src = user.photo_url;
         }
 
-        function showPasswordInput() {
-            document.getElementById('msgPopup').style.display = 'none';
-            document.getElementById('passPopup').style.display = 'flex';
+        // Section Switcher
+        function showSection(name) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById('sec-' + name).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-nav'));
+            document.getElementById('n-' + name).classList.add('active-nav');
         }
 
-        function hidePopups() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
-        }
+        // Lock Control (Is Paid?)
+        let isPaid = false; // আপনি সার্ভার থেকে এই ডাটা আনতে পারেন, আপাতত false রাখা হয়েছে।
 
-        function verifyPassword() {
-            const val = document.getElementById('passInput').value;
-            if (val === SECRET_PASS) {
-                isPremium = true;
-                hidePopups();
-                executeLogic();
-            } else {
-                alert("Invalid Key! Please contact @QX_TRADER_77");
-            }
-        }
+        // Prediction Logic
+        let canGen = true;
+        function generate() {
+            if(!isPaid) { alert("Please buy a plan first!"); return; }
+            let p = document.getElementById('p_num').value;
+            if(p.length < 1) return;
+            if(!canGen) { alert("Wait 30s"); return; }
 
-        function executeLogic() {
-            const input = document.getElementById('periodInput').value;
-            const display = document.getElementById('resultDisplay');
-            const selectedTime = document.querySelector('input[name="timeType"]:checked').value;
+            const btn = document.getElementById('g_btn');
+            btn.innerText = "Analyzing Pattern...";
+            btn.classList.add('opacity-50');
             
-            const lastDigit = parseInt(input.slice(-1));
-            const prediction = (lastDigit % 2 === 0) ? "BIG" : "SMALL";
-
-            isWaiting = true;
-            display.innerText = "WAIT...";
-            display.style.color = "gray";
-
             setTimeout(() => {
-                display.innerText = prediction;
-                display.style.color = (prediction === "BIG") ? "#ff4d4d" : "#4dff4d";
-                startCooldown(parseInt(selectedTime));
-            }, 1200);
+                const res = Math.random() > 0.5 ? "BIG" : "SMALL";
+                document.getElementById('res_box').classList.remove('hidden');
+                const text = document.getElementById('final_res');
+                text.innerText = res;
+                text.className = res === "BIG" ? "text-7xl font-black my-4 text-orange-500 animate__animated animate__heartBeat" : "text-7xl font-black my-4 text-blue-500 animate__animated animate__heartBeat";
+                
+                document.getElementById('p_num').value = parseInt(p) + 1;
+                btn.innerText = "Re-checking in 30s";
+                canGen = false;
+                
+                setTimeout(() => { 
+                    canGen = true; 
+                    btn.innerText = "Analyze Server"; 
+                    btn.classList.remove('opacity-50');
+                }, 30000);
+            }, 2000);
         }
 
-        function startCooldown(seconds) {
-            const timerDisplay = document.getElementById('timerText');
-            let timeLeft = seconds;
-            const interval = setInterval(() => {
-                timerDisplay.innerText = `NEXT ANALYSIS IN: ${timeLeft}S`;
-                timeLeft--;
-                if (timeLeft < 0) {
-                    clearInterval(interval);
-                    isWaiting = false;
-                    timerDisplay.innerText = "";
-                    document.getElementById('periodInput').value = "";
-                }
-            }, 1000);
+        // Payment Logic
+        let activePlan = "";
+        function openPay(d, p) {
+            activePlan = d;
+            document.getElementById('amt-text').innerText = "৳" + p;
+            document.getElementById('pay-modal').classList.remove('hidden');
+        }
+        function closePay() { document.getElementById('pay-modal').classList.add('hidden'); }
+
+        function sendReq() {
+            const t = document.getElementById('trx').value;
+            if(t.length < 5) { tg.showAlert("Invalid TrxID!"); return; }
+
+            const botToken = "7968384087:AAEpp_OvCgQRvKAe_wq9pnxozHY9UHq36GI";
+            const admin = "7071188264";
+            const msg = `💎 NEW PREMIUM REQUEST\n\nUser: ${user.first_name}\nID: ${user.id}\nPlan: ${activePlan}\nTrxID: ${t}`;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${admin}&text=${encodeURIComponent(msg)}`)
+            .then(() => {
+                tg.showAlert("আপনার পেমেন্ট রিকোয়েস্ট পাঠানো হয়েছে। দয়া করে ৫-১০ মিনিট অপেক্ষা করুন অ্যাডমিন চেক করে আপনার একাউন্ট একটিভ করে দিবে।");
+                closePay();
+            });
         }
     </script>
 </body>
