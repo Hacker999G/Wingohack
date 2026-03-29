@@ -3,129 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Login App</title>
+    <title>Premium Key Access - Developer Gopal</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
-        /* প্রিমিয়াম ডার্ক থিম স্টাইল */
+        /* প্রিমিয়াম ডার্ক গ্লাসমরফিজম ডিজাইন */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #0f172a;
+            background-image: radial-gradient(circle at top right, #1e293b, #0f172a);
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #0f172a; /* Dark Blue-Black */
-            color: white;
             margin: 0;
+            overflow: hidden;
         }
         .container {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 24px;
             text-align: center;
             width: 85%;
-            max-width: 400px;
-            border: 1px solid #334155;
+            max-width: 380px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
         #user-photo {
             border-radius: 50%;
-            width: 90px;
-            height: 90px;
-            margin-bottom: 15px;
-            border: 3px solid #38bdf8;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+            border: 2px solid #38bdf8;
+            padding: 3px;
         }
+        h2 { margin: 10px 0; font-size: 22px; color: #f8fafc; }
+        p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+        
         input {
             width: 100%;
-            padding: 12px;
-            margin: 15px 0;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 12px;
             border: 1px solid #334155;
-            border-radius: 8px;
-            background: #0f172a;
-            color: white;
+            background: rgba(15, 23, 42, 0.8);
+            color: #38bdf8;
+            font-weight: bold;
+            text-align: center;
+            font-size: 16px;
             box-sizing: border-box;
-            outline: none;
+            letter-spacing: 1px;
         }
-        input:focus {
-            border-color: #38bdf8;
-        }
-        .login-btn {
-            background: #38bdf8;
+        input:focus { border-color: #38bdf8; outline: none; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        
+        .btn {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
             color: #0f172a;
             border: none;
-            padding: 12px;
+            padding: 14px;
             width: 100%;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 12px;
+            font-weight: 800;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 10px;
             transition: 0.3s;
         }
-        .login-btn:hover {
-            background: #0ea5e9;
-        }
-        /* কন্টাক্ট বাটনের স্টাইল */
+        .btn:active { transform: scale(0.98); }
+        
         .contact-link {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 25px;
             color: #94a3b8;
             text-decoration: none;
-            font-size: 14px;
-            transition: 0.3s;
+            font-size: 13px;
         }
-        .contact-link b {
-            color: #38bdf8;
-        }
-        .contact-link:hover {
-            color: #f1f5f9;
-        }
-        #content { display: none; }
+        .contact-link b { color: #38bdf8; }
+
+        #main-content { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container" id="login-box">
-    <img id="user-photo" src="https://via.placeholder.com/90" alt="Profile">
-    <h2 id="user-name" style="margin: 5px 0;">হ্যালো!</h2>
-    <p style="color: #94a3b8;">প্রবেশ করতে আপনার পাসওয়ার্ড দিন</p>
+    <img id="user-photo" src="https://via.placeholder.com/80" alt="Avatar">
+    <h2 id="user-name">Welcome</h2>
+    <p>সফটওয়্যারটি ব্যবহার করতে ইউনিক কি (Key) দিন</p>
     
-    <input type="password" id="password" placeholder="পাসওয়ার্ড লিখুন...">
-    <button class="login-btn" onclick="checkPassword()">লগইন করুন</button>
+    <input type="text" id="access-key" placeholder="অ্যাক্সেস কি লিখুন...">
+    <button class="btn" onclick="validateKey()">অ্যাক্টিভেট করুন</button>
 
     <a href="https://t.me/JUST_GOPAL" class="contact-link">
-        পাসওয়ার্ড ভুলে গেছেন? <b>যোগাযোগ করুন</b>
+        আপনার কাছে কি নেই? <b>ডেভেলপার গোপাল</b>-এর সাথে যোগাযোগ করুন
     </a>
 </div>
 
-<div class="container" id="content">
-    <h2 style="color: #38bdf8;">সফলভাবে লগইন হয়েছে!</h2>
-    <p>আপনার ড্যাশবোর্ডে স্বাগতম।</p>
-    <button class="login-btn" onclick="tg.close()">অ্যাপ বন্ধ করুন</button>
+<div class="container" id="main-content">
+    <div style="font-size: 50px; margin-bottom: 10px;">✅</div>
+    <h2 style="color: #38bdf8;">সফলভাবে যুক্ত হয়েছেন!</h2>
+    <p>আপনার কি-টি এই ডিভাইসের জন্য সংরক্ষিত করা হয়েছে।</p>
+    <button class="btn" onclick="tg.close()">অ্যাপটি বন্ধ করুন</button>
 </div>
 
 <script>
+    // ১. টেলিগ্রাম ইনিশিয়ালাইজেশন
     let tg = window.Telegram.WebApp;
-    tg.expand(); 
-
-    // ১. টেলিগ্রাম থেকে ডাটা রিড করা
-    let user = tg.initDataUnsafe.user;
-    if (user) {
-        document.getElementById('user-name').innerText = `হ্যালো, ${user.first_name || 'ইউজার'}!`;
-        if (user.photo_url) {
-            document.getElementById('user-photo').src = user.photo_url;
-        }
+    tg.expand();
+    const user = tg.initDataUnsafe.user;
+    
+    if(user) {
+        document.getElementById('user-name').innerText = user.first_name;
+        if(user.photo_url) document.getElementById('user-photo').src = user.photo_url;
     }
 
-    // ২. পাসওয়ার্ড চেক ফাংশন
-    function checkPassword() {
-        const pass = document.getElementById('password').value;
-        const correctPass = "123456"; // আপনার কাঙ্ক্ষিত পাসওয়ার্ড এখানে দিন
+    // ২. আপনার দেওয়া Firebase কনফিগারেশন
+    const firebaseConfig = {
+        apiKey: "AIzaSyCx3LLV88dkBKXj4nvHNSLtc3GJSNbcYbM",
+        authDomain: "wingohack-36674.firebaseapp.com",
+        projectId: "wingohack-36674",
+        databaseURL: "https://wingohack-36674-default-rtdb.firebaseio.com", // প্রোজেক্ট আইডি অনুযায়ী ইউআরএল
+        storageBucket: "wingohack-36674.firebasestorage.app",
+        messagingSenderId: "344636000633",
+        appId: "1:344636000633:web:63a06f019b4e35ec4647a8",
+        measurementId: "G-PVKT75Y0KP"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        if (pass === correctPass) {
-            document.getElementById('login-box').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-        } else {
-            tg.showAlert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে চেষ্টা করুন।");
+    // ৩. কি (Key) ভ্যালিডেশন ফাংশন
+    async function validateKey() {
+        const inputKey = document.getElementById('access-key').value.trim();
+        const userId = user ? user.id : "unknown_user"; // ইউজারের টেলিগ্রাম আইডি
+
+        if (!inputKey) {
+            tg.showAlert("দয়া করে একটি বৈধ Key প্রদান করুন!");
+            return;
         }
+
+        tg.MainButton.showProgress(); // লোডিং শুরু
+
+        const keyRef = db.ref('keys/' + inputKey);
+
+        keyRef.once('value', (snapshot) => {
+            const data = snapshot.val();
+
+            if (data === null) {
+                tg.showAlert("দুঃখিত, এই কি (Key) টি সঠিক নয়!");
+            } else if (data.used_by && data.used_by !== userId) {
+                tg.showAlert("এই কি-টি ইতিমধ্যে অন্য একজন ইউজার ব্যবহার করছেন!");
+            } else {
+                // কি সঠিক এবং ইউজারের আইডির সাথে লক করে দেওয়া হচ্ছে
+                keyRef.update({
+                    used_by: userId,
+                    status: "used",
+                    last_login: new Date().toLocaleString(),
+                    user_name: user ? user.first_name : "N/A"
+                });
+
+                // ইন্টারফেস পরিবর্তন
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+            tg.MainButton.hideProgress();
+        });
     }
 </script>
 
