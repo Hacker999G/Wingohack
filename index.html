@@ -3,93 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Mini App</title>
+    <title>Premium Login App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* প্রিমিয়াম ডার্ক থিম স্টাইল */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #f0f2f5;
+            background-color: #0f172a; /* Dark Blue-Black */
+            color: white;
             margin: 0;
         }
         .container {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             text-align: center;
-            width: 80%;
+            width: 85%;
+            max-width: 400px;
+            border: 1px solid #334155;
         }
-        img {
+        #user-photo {
             border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            margin-bottom: 10px;
+            width: 90px;
+            height: 90px;
+            margin-bottom: 15px;
+            border: 3px solid #38bdf8;
         }
         input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #0088cc;
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            background: #0f172a;
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
+            box-sizing: border-box;
+            outline: none;
         }
-        #content { display: none; } /* লগইন এর আগে লুকানো থাকবে */
+        input:focus {
+            border-color: #38bdf8;
+        }
+        .login-btn {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .login-btn:hover {
+            background: #0ea5e9;
+        }
+        /* কন্টাক্ট বাটনের স্টাইল */
+        .contact-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .contact-link b {
+            color: #38bdf8;
+        }
+        .contact-link:hover {
+            color: #f1f5f9;
+        }
+        #content { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container" id="login-box">
-    <img id="user-photo" src="https://via.placeholder.com/80" alt="Profile">
-    <h2 id="user-name">হ্যালো!</h2>
-    <p>প্রবেশ করতে আপনার প্রাইভেট কী দিন</p>
+    <img id="user-photo" src="https://via.placeholder.com/90" alt="Profile">
+    <h2 id="user-name" style="margin: 5px 0;">হ্যালো!</h2>
+    <p style="color: #94a3b8;">প্রবেশ করতে আপনার পাসওয়ার্ড দিন</p>
+    
     <input type="password" id="password" placeholder="পাসওয়ার্ড লিখুন...">
-    <br>
-    <button onclick="checkPassword()">লগইন</button>
+    <button class="login-btn" onclick="checkPassword()">লগইন করুন</button>
+
+    <a href="https://t.me/JUST_GOPAL" class="contact-link">
+        পাসওয়ার্ড ভুলে গেছেন? <b>যোগাযোগ করুন</b>
+    </a>
 </div>
 
 <div class="container" id="content">
-    <h2>স্বাগতম!</h2>
-    <p>আপনি সফলভাবে লগইন করেছেন।</p>
-    <button onclick="tg.close()">অ্যাপ বন্ধ করুন</button>
+    <h2 style="color: #38bdf8;">সফলভাবে লগইন হয়েছে!</h2>
+    <p>আপনার ড্যাশবোর্ডে স্বাগতম।</p>
+    <button class="login-btn" onclick="tg.close()">অ্যাপ বন্ধ করুন</button>
 </div>
 
 <script>
     let tg = window.Telegram.WebApp;
-    tg.expand(); // অ্যাপটি বড় করে দেখাবে
+    tg.expand(); 
 
-    // ১. টেলিগ্রাম থেকে ইউজার ডাটা সংগ্রহ
+    // ১. টেলিগ্রাম থেকে ডাটা রিড করা
     let user = tg.initDataUnsafe.user;
-
     if (user) {
-        document.getElementById('user-name').innerText = `হ্যালো, ${user.first_name}!`;
+        document.getElementById('user-name').innerText = `হ্যালো, ${user.first_name || 'ইউজার'}!`;
         if (user.photo_url) {
             document.getElementById('user-photo').src = user.photo_url;
         }
     }
 
-    // ২. পাসওয়ার্ড চেক করার ফাংশন
+    // ২. পাসওয়ার্ড চেক ফাংশন
     function checkPassword() {
         const pass = document.getElementById('password').value;
-        const correctPass = "123456"; // এখানে আপনার পাসওয়ার্ড সেট করুন
+        const correctPass = "123456"; // আপনার কাঙ্ক্ষিত পাসওয়ার্ড এখানে দিন
 
         if (pass === correctPass) {
             document.getElementById('login-box').style.display = 'none';
             document.getElementById('content').style.display = 'block';
-            tg.MainButton.setText("লগইন সফল!").show();
         } else {
-            alert("ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।");
+            tg.showAlert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে চেষ্টা করুন।");
         }
     }
 </script>
